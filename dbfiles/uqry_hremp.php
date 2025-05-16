@@ -117,7 +117,7 @@ if (isset($_POST['submit'])) {
     //$res = mysqli_query($link, "insert into acyear(year,user) values('$acyear','$user')") or die("could not connected" . mysqli_error());
     //if the form variables are not empty then update data into database
 
-      $sql = "update emps set emp_name='$emp_name',esic_number='$esic_number',DOB ='$DOB',gender='$gender',maritalstatus='$maritalstatus',contactno='$contactno',
+       $sql = "update emps set emp_name='$emp_name',esic_number='$esic_number',DOB ='$DOB',gender='$gender',maritalstatus='$maritalstatus',contactno='$contactno',
        adharcardno='$adharcardno',mcertificate='$mcertificate',address='$address',state='$state',qualification='$qualification',DOJ='$DOJ',fname='$fname',fdob='$fdob',fadharno='$fadharno',mname='$mname', mdob='$mdob',madharno='$madharno',
        rno='$rno',wname='$wname',sdob='$sdob',sadharno='$sadharno',nok='$nok',childname='$childname',pan='$pan',uan='$uan',designation='$designation',ESI_NO='$ESI_NO',emp_email='$emp_email',bg='$bg',stat='$stat',
        username='$username',password='$password',tservices='$tservices',managerial='$managerial',mole1='$mole1',mole2='$mole2',fromdate='$fromdate',todate='$todate',
@@ -128,64 +128,127 @@ if (isset($_POST['submit'])) {
     
 
             
-            $bname     = trim($_POST['banknm']);
-            $branch    = trim($_POST['bb']);
-            $ifsc      = trim($_POST['ifcs']);
-            $accno     = trim($_POST['acno']);
-            
-            $nname     = trim($_POST['nname']);
-            $nrelation = trim($_POST['nrelation']);
-            $naddress  = trim($_POST['naddress']);
-            $ndob      = trim($_POST['ndob']);
-            $namount   = trim($_POST['namount']);
-            
+            $bname      = trim($_POST['banknm']);
+            $branch     = trim($_POST['bb']);
+            $ifsc       = trim($_POST['ifcs']);
+            $accno      = trim($_POST['acno']);
 
-            
-          $x4 = "update bank_nominee set bname = '$bname',branch= '$branch',ifsc='$ifsc',accno='$accno',nname='$nname',
-          nrelation='$nrelation',naddress='$naddress',ndob='$ndob',namount='$namount' where employeeid='$employeeid'";
-          
+            $nname      = trim($_POST['nname']);
+            $nrelation  = trim($_POST['nrelation']);
+            $naddress   = trim($_POST['naddress']);
+            $ndob       = trim($_POST['ndob']);
+            $namount    = trim($_POST['namount']);
 
-                $res4 = mysqli_query($link, $x4) or die("could not connected" . mysqli_error($link));
+            // Check if a record already exists
+            $check = mysqli_query($link, "SELECT * FROM bank_nominee WHERE employeeid = '$employeeid'");
+
+            if (mysqli_num_rows($check) > 0) {
+                // Update existing record
+                $x4 = "UPDATE bank_nominee SET 
+                            bname = '$bname',
+                            branch = '$branch',
+                            ifsc = '$ifsc',
+                            accno = '$accno',
+                            nname = '$nname',
+                            nrelation = '$nrelation',
+                            naddress = '$naddress',
+                            ndob = '$ndob',
+                            namount = '$namount' 
+                        WHERE employeeid = '$employeeid'";
+            } else {
+                // Insert new record
+                $x4 = "INSERT INTO bank_nominee (
+                            employeeid, bname, branch, ifsc, accno,
+                            nname, nrelation, naddress, ndob, namount
+                        ) VALUES (
+                            '$employeeid', '$bname', '$branch', '$ifsc', '$accno',
+                            '$nname', '$nrelation', '$naddress', '$ndob', '$namount'
+                        )";
+            }
+
+$res4 = mysqli_query($link, $x4) or die("Could not connect: " . mysqli_error($link));
+
 
         
-            $uniform     = trim($_POST['uniform']);
-            $ushirt     = trim($_POST['ushirt']);
-            $shirtsize    = trim($_POST['shirtsize']);
-            $shirtqty      = trim($_POST['shirtqty']);
-            $upant     = trim($_POST['upant']);
+            $uniform        = trim($_POST['uniform']);
+            $ushirt         = trim($_POST['ushirt']);
+            $shirtsize      = trim($_POST['shirtsize']);
+            $shirtqty       = trim($_POST['shirtqty']);
+            $upant          = trim($_POST['upant']);
+            $pantsize       = trim($_POST['pantsize']);
+            $pantqty        = trim($_POST['pantqty']);
+            $ushoe          = trim($_POST['ushoe']);
+            $shoesize       = trim($_POST['shoesize']);
+            $shoeqty        = trim($_POST['shoeqty']);
+            $uniformisdate  = trim($_POST['uniformisdate']);
+
+            // Check if record exists for the employee
+            $check = mysqli_query($link, "SELECT * FROM emp_uniform WHERE employeeid = '$employeeid'");
+            if (mysqli_num_rows($check) > 0) {
+                // Record exists, perform UPDATE
+                $x5 = "UPDATE emp_uniform SET 
+                        uniform = '$uniform', 
+                        ushirt = '$ushirt', 
+                        shirtsize = '$shirtsize', 
+                        shirtqty = '$shirtqty',
+                        upant = '$upant', 
+                        pantsize = '$pantsize', 
+                        pantqty = '$pantqty', 
+                        ushoe = '$ushoe', 
+                        shoesize = '$shoesize', 
+                        shoeqty = '$shoeqty', 
+                        uniformisdate = '$uniformisdate' 
+                        WHERE employeeid = '$employeeid'";
+            } else {
+                // No record exists, perform INSERT
+                $x5 = "INSERT INTO emp_uniform (
+                            employeeid, uniform, ushirt, shirtsize, shirtqty,
+                            upant, pantsize, pantqty, ushoe, shoesize, shoeqty, uniformisdate
+                    ) VALUES (
+                            '$employeeid', '$uniform', '$ushirt', '$shirtsize', '$shirtqty',
+                            '$upant', '$pantsize', '$pantqty', '$ushoe', '$shoesize', '$shoeqty', '$uniformisdate'
+                    )";
+            }
+
+            $res5 = mysqli_query($link, $x5) or die("Query failed: " . mysqli_error($link));
+
+
             
-            $pantsize     = trim($_POST['pantsize']);
-            $pantqty = trim($_POST['pantqty']);
-            $ushoe  = trim($_POST['ushoe']);
-            $shoesize      = trim($_POST['shoesize']);
-            $shoeqty   = trim($_POST['shoeqty']);
-            $uniformisdate   = trim($_POST['uniformisdate']);
+                $basicamount      = trim($_POST['basicamount']);
+                $daamount         = trim($_POST['daamount']);
+                $hraamount        = trim($_POST['hraamount']);
+                $otherallowance   = trim($_POST['otherallowance']);
+                $advleave         = trim($_POST['advleave']);
+                $advbonus         = trim($_POST['advbonus']);
+                $totalmonthlyem   = trim($_POST['totalmonthlyem']);
 
-             
-         $x5 = "update emp_uniform set uniform = '$uniform', ushirt = '$ushirt' ,shirtsize= '$shirtsize' ,shirtqty='$shirtqty',
-          upant='$upant',pantsize='$pantsize',pantqty='$pantqty',ushoe='$ushoe',shoesize='$shoesize',shoeqty='$shoeqty',
-          uniformisdate='$uniformisdate' where employeeid='$employeeid'";
-         
+                // Check if record exists
+                $check_salary = mysqli_query($link, "SELECT * FROM salaries WHERE employeeid = '$employeeid'");
 
-                $res5 = mysqli_query($link, $x5) or die("could not connected" . mysqli_error($link));
+                if (mysqli_num_rows($check_salary) > 0) {
+                    // Update existing record
+                    $x6 = "UPDATE salaries SET 
+                            basicamount = '$basicamount', 
+                            daamount = '$daamount', 
+                            hraamount = '$hraamount', 
+                            otherallowance = '$otherallowance',
+                            advleave = '$advleave', 
+                            advbonus = '$advbonus', 
+                            totalmonthlyem = '$totalmonthlyem' 
+                            WHERE employeeid = '$employeeid'";
+                } else {
+                    // Insert new record
+                    $x6 = "INSERT INTO salaries (
+                                employeeid, basicamount, daamount, hraamount, otherallowance,
+                                advleave, advbonus, totalmonthlyem
+                        ) VALUES (
+                                '$employeeid', '$basicamount', '$daamount', '$hraamount', '$otherallowance',
+                                '$advleave', '$advbonus', '$totalmonthlyem'
+                        )";
+                }
 
-            
-                $basicamount     = trim($_POST['basicamount']);
-                $daamount     = trim($_POST['daamount']);
-                $hraamount    = trim($_POST['hraamount']);
-                $otherallowance      = trim($_POST['otherallowance']);
-                $advleave     = trim($_POST['advleave']);
-                
-                $advbonus     = trim($_POST['advbonus']);
-                $totalmonthlyem = trim($_POST['totalmonthlyem']);
-                 
-    
-                 
-              $x6 = "update salaries set basicamount = '$basicamount', daamount = '$daamount' ,hraamount= '$hraamount' ,otherallowance='$otherallowance',
-              advleave='$advleave',advbonus='$advbonus',totalmonthlyem='$totalmonthlyem' where employeeid='$employeeid'";
-             
-    
-                    $res6 = mysqli_query($link, $x6) or die("could not connected" . mysqli_error($link));
+                 $res6 = mysqli_query($link, $x6) or die("Query failed: " . mysqli_error($link));
+
     
 
     if ($res) {
@@ -311,6 +374,50 @@ if (isset($_POST['submit'])) {
 
         }
 
+        $iname = $_FILES['childphoto1']['name'];
+
+        if ($iname != "") {
+
+            $iname = $employeeid . 'childphoto1';
+
+            $tmp = $_FILES['childphoto1']['tmp_name'];
+
+            $dir = "empphotos";
+
+            $destination = $dir . '/' . $iname;
+
+            move_uploaded_file($tmp, $destination);
+
+            $childphoto1Path = $photoFullPath . '' . $destination;
+
+            $insertchildphoto1mimg = "update emps set childphoto1='$childphoto1Path' where empid='$id' ";
+
+            $insertchildphotoimgres = mysqli_query($link, $insertchildphoto1mimg) or die("could not connected" . mysqli_error($link));
+
+        }
+
+        $iname = $_FILES['childphoto2']['name'];
+
+        if ($iname != "") {
+
+            $iname = $employeeid . 'childphoto2';
+
+            $tmp = $_FILES['childphoto2']['tmp_name'];
+
+            $dir = "empphotos";
+
+            $destination = $dir . '/' . $iname;
+
+            move_uploaded_file($tmp, $destination);
+
+            $childphoto2Path = $photoFullPath . '' . $destination;
+
+            $insertchildphoto2mimg = "update emps set childphoto2='$childphoto2Path' where empid='$id' ";
+
+            $insertchildphoto2imgres = mysqli_query($link, $insertchildphoto2mimg) or die("could not connected" . mysqli_error($link));
+
+        }
+
         $iname = $_FILES['fphoto']['name'];
 
         if ($iname != "") {
@@ -377,85 +484,9 @@ if (isset($_POST['submit'])) {
 
         }
 
-        // Emp ID Back image code end here
+         
 
-        // Empi ID front image code starts from here
-
-        $iname = $_FILES['empidcardfront']['name'];
-
-        if ($iname != "") {
-
-            $iname = $employeeid . 'empidcardfront';
-
-            $tmp = $_FILES['empidcardfront']['tmp_name'];
-
-            $dir = "empphotos";
-
-            $destination = $dir . '/' . $iname;
-
-            move_uploaded_file($tmp, $destination);
-
-            $empidpath = $photoFullPath . '' . $destination;
-
-            $insertempidfrimg = "update emps set empidcardfront='$empidpath' where empid='$id' ";
-
-            $insertempidmgres = mysqli_query($link, $insertempidfrimg) or die("could not connected" . mysqli_error($link));
-
-        }
-
-        // Emp ID front image code end here
-
-        // Emp ID Back image code starts from here
-
-        $iname = $_FILES['empidcardback']['name'];
-
-        if ($iname != "") {
-
-            $iname = $employeeid . 'empidcardback';
-
-            $tmp = $_FILES['empidcardback']['tmp_name'];
-
-            $dir = "empphotos";
-
-            $destination = $dir . '/' . $iname;
-
-            move_uploaded_file($tmp, $destination);
-
-            $empidpath = $photoFullPath . '' . $destination;
-
-            $insertimgidimgback = "update emps set empidcardback='$empidpath' where empid='$id' ";
-
-            $insertempidimgbackres = mysqli_query($link, $insertimgidimgback) or die("could not connected" . mysqli_error($link));
-
-        }
-
-        // Emp ID Back image code end here
-
-        // Emp Fingerprint image code starts from here
-
-        $iname = $_FILES['empfingerprint']['name'];
-
-        if ($iname != "") {
-
-            $iname = $employeeid . 'empfingerprint';
-
-            $tmp = $_FILES['empfingerprint']['tmp_name'];
-
-            $dir = "empphotos";
-
-            $destination = $dir . '/' . $iname;
-
-            move_uploaded_file($tmp, $destination);
-
-            $adharPath = $photoFullPath . '' . $destination;
-
-            $insertfingerimg = "update emps set empfingerprint='$adharPath' where empid='$id' ";
-
-            $insertfingerimgres = mysqli_query($link, $insertfingerimg) or die("could not connected" . mysqli_error($link));
-
-        }
-
-        // Emp Fingerprint image code end here
+        
 
         $iname = $_FILES['panimg']['name'];
         if ($iname != "") {
@@ -485,96 +516,6 @@ if (isset($_POST['submit'])) {
             $insertbankimg = "update bank_nominee set bphoto='$bankPath' where employeeid='$employeeid' ";
 
             $insertbankimgres = mysqli_query($link, $insertbankimg) or die("could not connected" . mysqli_error($link));
-        }
-
-		$iname = $_FILES['img1']['name'];
-        if ($iname != "") {
-
-            $iname = $employeeid . 'img1';
-            $tmp   = $_FILES['img1']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert1Path      = $photoFullPath . '' . $destination;
-            $insertcert1img = "update emps set certi1='$cert1Path' where empid='$id' ";
-
-            $insertcer1imgres = mysqli_query($link, $insertcert1img) or die("could not connected" . mysqli_error($link));
-        }
-
-		$iname = $_FILES['img2']['name'];
-        if ($iname != "") {
-
-            $iname = $employeeid . 'img2';
-            $tmp   = $_FILES['img2']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert2Path      = $photoFullPath . '' . $destination;
-            $insertcert2img = "update emps set certi2='$cert2Path' where empid='$id' ";
-
-            $insertcer2imgres = mysqli_query($link, $insertcert2img) or die("could not connected" . mysqli_error($link));
-        }
-
-		$iname = $_FILES['img3']['name'];
-        if ($iname != "") {
-
-            $iname = $employeeid . 'img3';
-            $tmp   = $_FILES['img3']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert3Path      = $photoFullPath . '' . $destination;
-            $insertcert3img = "update emps set certi3='$cert3Path' where empid='$id' ";
-
-            $insertcer3imgres = mysqli_query($link, $insertcert3img) or die("could not connected" . mysqli_error($link));
-        }
-
-		$iname = $_FILES['img4']['name'];
-        if ($iname != "") {
-
-            $iname = $employeeid . 'img4';
-            $tmp   = $_FILES['img4']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert4Path      = $photoFullPath . '' . $destination;
-            $insertcert4img = "update emps set certi4='$cert4Path' where empid='$id' ";
-
-            $insertcer4imgres = mysqli_query($link, $insertcert4img) or die("could not connected" . mysqli_error($link));
-        }
-
-		$iname = $_FILES['img5']['name'];
-        if ($iname != "") {
-
-            $iname = $employeeid . 'img5';
-            $tmp   = $_FILES['img5']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert5Path      = $photoFullPath . '' . $destination;
-            $insertcert5img = "update emps set certi5='$cert5Path' where empid='$id' ";
-
-            $insertcer5imgres = mysqli_query($link, $insertcert5img) or die("could not connected" . mysqli_error($link));
-        }
-
-		$iname = $_FILES['img6']['name'];
-        if ($iname != "") {
-
-            $iname = $employeeid . 'img6';
-            $tmp   = $_FILES['img6']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert6Path      = $photoFullPath . '' . $destination;
-            $insertcert6img = "update emps set certi6='$cert6Path' where empid='$id' ";
-
-            $insertcer6imgres = mysqli_query($link, $insertcert6img) or die("could not connected" . mysqli_error($link));
         }
         print "<script>";
         print "alert('Successfully Uploaded ');";

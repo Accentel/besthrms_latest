@@ -76,6 +76,8 @@ ini_set('display_errors',1);
         document.getElementById("spousephotoblock").hidden = !isMarried;
         document.getElementById("nokblock").hidden = !isMarried;
         document.getElementById("childrennameblock").hidden = !isMarried;
+        document.getElementById("childrenphoto1").hidden = !isMarried;
+         document.getElementById("childrenphoto2").hidden = !isMarried;
 
         if (!isMarried) {
             document.getElementById("wname").value = '';
@@ -84,9 +86,79 @@ ini_set('display_errors',1);
             document.getElementById("sphoto").value = '';
             document.getElementById("nok").value = '';
             document.getElementById("childname").value = '';
+            document.getElementById("childphoto1").value = '';
+            document.getElementById("childphoto2").value = '';
         }
     }
     </script>
+
+    <script>
+function validateUAN() {
+    const uanInput = document.getElementById("uan");
+    const uan = uanInput.value;
+    const errorBox = document.getElementById("uan-error");
+
+    // Show error only if user has typed something
+    if (uan.length > 0 && uan.length !== 12) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+<script>
+function validateESI() {
+    const esiInput = document.getElementById("esi");
+    const esi = esiInput.value;
+    const errorBox = document.getElementById("esi-error");
+
+    // Show error only if user has typed something
+    if (esi.length > 0 && esi.length !== 10) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+
+<script>
+function validateFatherContact() {
+    const fnum = document.getElementById("fnumber").value;
+    const errorBox = document.getElementById("fnumber-error");
+
+    if (fnum.length > 0 && fnum.length !== 10) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+<script>
+function validateFatherAadhaar() {
+    const fadhar = document.getElementById("fadharno").value;
+    const errorBox = document.getElementById("fadharno-error");
+
+    if (fadhar.length > 0 && fadhar.length !== 10) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+
+<script>
+function validateMotherAadhaar() {
+    const madhar = document.getElementById("madharno").value;
+    const errorBox = document.getElementById("madharno-error");
+
+    if (madhar.length > 0 && madhar.length !== 12) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+
 
     <body class="no-skin">
 
@@ -179,10 +251,17 @@ ini_set('display_errors',1);
                                                 <td><input type="text" readonly  value="<?php echo $rw['state'] ?>"  name="state" id="state" class="form-control"></td>
                                             </tr>
 
-                                            <tr>
+                                            <!-- <tr>
                                                 <td align="right">ESIC Number</td>
                                                 <td><input type="text" value="<?php echo $rw['esic_number'] ?>"  name="esic_number" id="esic_number" class="form-control"></td>
-                                            </tr>
+                                            </tr> -->
+
+                                            <tr>
+                                                <td align="right">Site Name</td>
+                                                <td align="left">
+                                                    <input type="text" class="form-control"  value="<?php echo $rw['sitename'] ?>" id="sitename" name="sitename" placeholder="Enter Site Name">
+                                                </td>
+                                                </tr>
                 
                                             <tr>
                                                 <td align="right">Employee ID</td>
@@ -265,6 +344,37 @@ ini_set('display_errors',1);
                                                 <td align="right">Children Names</td>
                                                 <td><textarea name="childname" id="childname" class="form-control" placeholder="Enter names separated by commas"><?php echo $rw['childname'] ?></textarea></td>
                                             </tr>
+
+                                            <tr id="childrenphoto1" <?php if (strtolower($rw['maritalstatus']) == "unmarried") echo 'hidden'; ?>>
+                                                <td align="right">Children Photo1</td>
+                                                <td align="left">
+                                                    <input type="file" name="childphoto1" id="childphoto1"  class="form-control photo-upload" accept=".jpeg, .png, .jpg" />
+
+                                                    <?php
+                                                        if ($rw['childphoto1'] != "") {
+                                                            ?>
+                                                        <a href='<?php echo $rw['childphoto1'] ?>' target="_blank" style="color:blue;">view image</a>
+                                                    <?php
+                                                        }
+                                                        ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr id="childrenphoto2" <?php if (strtolower($rw['maritalstatus']) == "unmarried") echo 'hidden'; ?>>
+                                                <td align="right">Children Photo2</td>
+                                                <td align="left">
+                                                    <input type="file" name="childphoto2" id="childphoto2"  class="form-control photo-upload" accept=".jpeg, .png, .jpg" />
+
+                                                    <?php
+                                                        if ($rw['childphoto2'] != "") {
+                                                            ?>
+                                                        <a href='<?php echo $rw['childphoto2'] ?>' target="_blank" style="color:blue;">view image</a>
+                                                    <?php
+                                                        }
+                                                        ?>
+                                                </td>
+                                            </tr>
+
                                             <tr>
                                                 <td align="right">Blood Group </td>
                                                 <td align="left">
@@ -285,17 +395,23 @@ ini_set('display_errors',1);
                                                 <td><input type="date" value="<?php echo $rw["fdob"] ?>"  name="fdob" id="fdob" class="form-control"></td>
                                                 </tr>
                                                 <tr>
-                                                <td align="right">Father Contact No.</td>
-                                                <td align="left">
-                                                    <input type="number"  value="<?php echo $rw['fnumber'] ?>" class="form-control" name="fnumber" id="fnumber">
-                                                </td>
+                                                    <td align="right">Father Contact No.</td>
+                                                    <td align="left">
+                                                        <input type="text" value="<?php echo $rw['fnumber'] ?>" class="form-control" name="fnumber" id="fnumber"
+                                                            maxlength="10" title="Contact number must be 10 digits"
+                                                            oninput="this.value=this.value.replace(/[^0-9]/g,''); validateFatherContact();">
+                                                        <div id="fnumber-error" style="color:red; display:none;">Contact number must be exactly 10 digits if provided.</div>
+                                                    </td>
                                                 </tr>
 
                                                 <tr>
-                                                <td align="right">Father Aadhaar No</td>
-                                                <td align="left">
-                                                    <input type="number" value="<?php echo $rw['fadharno'] ?>" class="form-control" name="fadharno" id="fadharno">
-                                                </td>
+                                                    <td align="right">Father Aadhaar No</td>
+                                                    <td align="left">
+                                                        <input type="text" value="<?php echo $rw['fadharno'] ?>" class="form-control" name="fadharno" id="fadharno"
+                                                            maxlength="10" title="Aadhaar number must be 10 digits"
+                                                            oninput="this.value=this.value.replace(/[^0-9]/g,''); validateFatherAadhaar();">
+                                                        <div id="fadharno-error" style="color:red; display:none;">Aadhaar number must be exactly 10 digits if provided.</div>
+                                                    </td>
                                                 </tr>
 
                                                 <tr>
@@ -326,9 +442,12 @@ ini_set('display_errors',1);
                                             </tr>
 
                                             <tr>
-                                                <td align="right">Mother Aadhaar No </td>
+                                                <td align="right">Mother Aadhaar No</td>
                                                 <td align="left">
-                                                    <input type="text" class="form-control" value="<?php echo $rw['madharno'] ?>" id="madharno" name="madharno">
+                                                    <input type="text" class="form-control" value="<?php echo $rw['madharno'] ?>" id="madharno" name="madharno"
+                                                        maxlength="12" title="Aadhaar number must be 12 digits"
+                                                        oninput="this.value=this.value.replace(/[^0-9]/g,''); validateMotherAadhaar();">
+                                                    <div id="madharno-error" style="color:red; display:none;">Aadhaar number must be exactly 12 digits if provided.</div>
                                                 </td>
                                             </tr>
 
@@ -443,16 +562,22 @@ ini_set('display_errors',1);
                                             <tr>
                                                 <td align="right">UAN No.</td>
                                                 <td align="left">
-                                                    <input type="text"  name="uan" value="<?php echo $rw['uan'] ?>" id="uan" class="form-control">
+                                                    <input type="text" name="uan" value="<?php echo $rw['uan'] ?>" id="uan" class="form-control"
+                                                        maxlength="12" title="UAN number must be 12 digits"
+                                                        oninput="this.value=this.value.replace(/[^0-9]/g,''); validateUAN();">
+                                                    <div id="uan-error" style="color:red; display:none;">UAN number must be exactly 12 digits.</div>
                                                 </td>
-                                                </tr>
+                                            </tr>
 
                                             <tr>
                                                 <td align="right">ESI No.</td>
                                                 <td align="left">
-                                                    <input type="text"  name="esi" id="esi" value="<?php echo $rw['ESI_NO'] ?>" class="form-control">
+                                                    <input type="text" name="esi" id="esi" value="<?php echo $rw['ESI_NO'] ?>" class="form-control"
+                                                        maxlength="10" title="ESI number must be 10 digits"
+                                                        oninput="this.value=this.value.replace(/[^0-9]/g,''); validateESI();">
+                                                    <div id="esi-error" style="color:red; display:none;">ESI number must be exactly 10 digits.</div>
                                                 </td>
-                                                </tr>
+                                            </tr>
                 <tr>
                                                 <td align="right">DOJ</td>
                                                 <td align="left">
@@ -803,12 +928,7 @@ ini_set('display_errors',1);
                                                 </td>
 
                                             </tr>
-                                                    <tr>
-                                                <td align="right">Site Name</td>
-                                                <td align="left">
-                                                    <input type="text" class="form-control"  value="<?php echo $rw['sitename'] ?>" id="sitename" name="sitename" placeholder="Enter Site Name">
-                                                </td>
-                                                </tr>
+                                                    
 
                                                 <tr>
                                                 <td align="right">Tools</td>

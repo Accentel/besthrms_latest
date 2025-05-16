@@ -182,6 +182,8 @@ $stn = "dashboard";
 		document.getElementById("spousephotoblock").hidden = !isMarried;
         document.getElementById("nokblock").hidden = !isMarried;
         document.getElementById("childrennameblock").hidden = !isMarried;
+		document.getElementById("childrenphoto1").hidden = !isMarried;
+		document.getElementById("childrenphoto2").hidden = !isMarried;
 
         if (!isMarried) {
             document.getElementById("wname").value = '';
@@ -190,6 +192,9 @@ $stn = "dashboard";
 			document.getElementById("sphoto").value = '';
             document.getElementById("nok").value = '';
             document.getElementById("childname").value = '';
+			document.getElementById("childname").value = '';
+			document.getElementById("childphoto1").value = '';
+			document.getElementById("childphoto2").value = '';
         }
     }
 
@@ -323,20 +328,128 @@ $stn = "dashboard";
 			//$('#bamount').val( subTotal.toFixed(2) );
 		}
 	</script>
-
 <script>
-    // Run after full page is loaded
+function validateAadhaar() {
+    const adhar = document.getElementById("adhar").value;
+    const errorBox = document.getElementById("adhar-error");
+    if (adhar.length !== 12) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+<script>
+function validateContact() {
+    const contact = document.getElementById("conno").value;
+    const errorBox = document.getElementById("contact-error");
+    if (contact.length !== 10) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+<script>
+function validateESI() {
+    const esi = document.getElementById("esi").value;
+    const errorBox = document.getElementById("esi-error");
+
+    if (esi.length !== 10) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+<script>
+function validateUAN() {
+    const uan = document.getElementById("uan").value;
+    const errorBox = document.getElementById("uan-error");
+
+    if (uan.length !== 12) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+<script>
+function validateFatherAadhaar() {
+    const fadhar = document.getElementById("fadharno").value;
+    const errorBox = document.getElementById("fadharno-error");
+
+    if (fadhar.length > 0 && fadhar.length !== 12) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+<script>
+function validateFatherContact() {
+    const fnum = document.getElementById("fnumber").value;
+    const errorBox = document.getElementById("fnumber-error");
+
+    if (fnum.length > 0 && fnum.length !== 10) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+<script>
+function validateMotherAadhaar() {
+    const madhar = document.getElementById("madharno").value;
+    const errorBox = document.getElementById("madharno-error");
+
+    if (madhar.length > 0 && madhar.length !== 12) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+<script>
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("myForm");
         const adharInput = document.getElementById("adhar");
-		const nameInput = document.getElementById("empname");
-		const contactInput = document.getElementById("conno");
-		const dobInput = document.getElementById("dob");
+        const nameInput = document.getElementById("empname");
+        const contactInput = document.getElementById("conno");
+        const dobInput = document.getElementById("dob");
 
-        const adharErrorBox  = document.getElementById("adhar-error");
-		const nameErrorBox = document.getElementById("name-error");
-		const contactErrorBox = document.getElementById("contact-error");
-		const dobErrorBox = document.getElementById("dob-error");
+        const adharErrorBox = document.getElementById("adhar-error");
+        const nameErrorBox = document.getElementById("name-error");
+        const contactErrorBox = document.getElementById("contact-error");
+        const dobErrorBox = document.getElementById("dob-error");
+
+        function validateDOB() {
+            const dobValue = dobInput.value;
+            if (!dobValue) {
+                dobErrorBox.textContent = "Employee DOB is required.";
+                dobErrorBox.style.display = "block";
+                return false;
+            }
+
+            const dobDate = new Date(dobValue);
+            const today = new Date();
+            let age = today.getFullYear() - dobDate.getFullYear();
+            const m = today.getMonth() - dobDate.getMonth();
+            const d = today.getDate() - dobDate.getDate();
+
+            if (m < 0 || (m === 0 && d < 0)) {
+                age--;
+            }
+
+            if (age < 18) {
+                dobErrorBox.textContent = "Age must be above 18 years old.";
+                dobErrorBox.style.display = "block";
+                return false;
+            } else {
+                dobErrorBox.style.display = "none";
+                return true;
+            }
+        }
 
         form.addEventListener("submit", function (e) {
             let valid = true;
@@ -351,34 +464,30 @@ $stn = "dashboard";
 
             if (nameInput.value.trim() === "") {
                 nameErrorBox.style.display = "block";
-                if (valid) nameInput.focus(); // only focus if Aadhaar was valid
+                if (valid) nameInput.focus();
                 valid = false;
             } else {
                 nameErrorBox.style.display = "none";
             }
 
-			if (contactInput.value.trim() === "") {
+            if (contactInput.value.trim() === "") {
                 contactErrorBox.style.display = "block";
-                if (valid) contactInput.focus(); // only focus if Aadhaar was valid
+                if (valid) contactInput.focus();
                 valid = false;
             } else {
                 contactErrorBox.style.display = "none";
             }
 
-			if (dobInput.value.trim() === "") {
-                dobErrorBox.style.display = "block";
-                if (valid) dobInput.focus(); // only focus if Aadhaar was valid
+            if (!validateDOB()) {
+                if (valid) dobInput.focus();
                 valid = false;
-            } else {
-                dobErrorBox.style.display = "none";
             }
 
             if (!valid) {
-                e.preventDefault(); // prevent submission
+                e.preventDefault();
             }
         });
 
-        // Optional: hide error on typing
         adharInput.addEventListener("input", function () {
             if (adharInput.value.trim() !== "") {
                 adharErrorBox.style.display = "none";
@@ -391,13 +500,18 @@ $stn = "dashboard";
             }
         });
 
-	    contactInput.addEventListener("input", function () {
+        contactInput.addEventListener("input", function () {
             if (contactInput.value.trim() !== "") {
-                nameErrorBox.style.display = "none";
+                contactErrorBox.style.display = "none";
             }
+        });
+
+        dobInput.addEventListener("change", function () {
+            validateDOB();
         });
     });
 </script>
+
 
 	<body class="no-skin">
 	<?php require 'template/logo.php'; ?>
@@ -485,21 +599,30 @@ $stn = "dashboard";
 
                                                             </tr>
 
-															<tr>
+															<!-- <tr>
 															<td align="right">ESIC Number</td>
 															<td>
 																<input type="text" class="form-control" value="" name="esic_number" id="esic_number">
 															</td>
-														</tr>
+														</tr> -->
+
+														<tr>
+                                                            <td align="right">Site Name</td>
+                                                                <td align="left">
+                                                                    <input type="text" value="" class="form-control" name="sitename" id="sitename"placeholder="Enter Site Name">
+                                                                </td>
+                                                        </tr>
 
 														<tr>
 															<td align="right">
 																Aadhaar No <span style="color:red"><b>*</b></span>
 															</td>
 															<td align="left">
-																<input type="text" value="" class="form-control" name="adhar" id="adhar" onkeyup='s2()'>
-																<div id='suggesstion-box'></div>
-																<div id="adhar-error" style="color:red; display:none;"> Employee Aadhaar number is required.</div>
+																<input type="text" value="" class="form-control" name="adhar" id="adhar"
+																	maxlength="12" pattern="\d{12}" title="Aadhaar must be 12 digits"
+																	oninput="this.value=this.value.replace(/[^0-9]/g,''); validateAadhaar();">
+																<!-- <div id="suggesstion-box"></div> -->
+																<div id="adhar-error" style="color:red; display:none;">Employee Aadhaar number is required and must be exactly 12 digits.</div>
 															</td>
 														</tr>
 
@@ -572,8 +695,6 @@ $stn = "dashboard";
 														<td align="left">
 															<input type="number" name="nok" id="nok" placeholder=" enter your number of kids " class="form-control" />
 														</td>
-
-
 													</tr>
 													<tr id="childrennameblock" hidden="hidden">
 														<td align="right">Children Names</td>
@@ -581,7 +702,21 @@ $stn = "dashboard";
 															<textarea name="childname" id="childname" class="form-control"></textarea>
 														</td>
 													</tr>
+													<tr id="childrenphoto1" hidden="hidden">
+															<td align="right">Children Photo1</td>
+															<td align="left">
+																<input type="file" name="childphoto1" id="childphoto1" class="form-control photo-upload" accept=".jpeg, .jpg, .png" />
+															</td>
+														</tr>
 													<tr>
+														<tr id="childrenphoto2" hidden="hidden">
+															<td align="right">Children Photo2</td>
+															<td align="left">
+																<input type="file" name="childphoto2" id="childphoto2" class="form-control photo-upload" accept=".jpeg, .jpg, .png" />
+															</td>
+														</tr>
+													<tr>
+
 
 														<td align="right">Father Name</td>
 														<td align="left">
@@ -596,22 +731,23 @@ $stn = "dashboard";
 																	</td>
                                                                 </tr>
 																<tr>
-															<td align="right">
-																Father Aadhaar No 
-															</td>
-															<td align="left">
-																<input type="text" value="" class="form-control" name="fadharno" id="fadharno" onkeyup='s2()'>
-																<!-- <div id='suggesstion-box'></div> -->
-																<!-- <div id="adhar-error" style="color:red; display:none;">Aadhaar number is required.</div> -->
-															</td>
-														</tr>
+																	<td align="right">Father Aadhaar No</td>
+																	<td align="left">
+																		<input type="text" value="" class="form-control" name="fadharno" id="fadharno"
+																			maxlength="12" title="Aadhaar number must be 12 digits"
+																			oninput="this.value=this.value.replace(/[^0-9]/g,''); validateFatherAadhaar();">
+																		<div id="fadharno-error" style="color:red; display:none;">Aadhaar number must be exactly 12 digits if provided.</div>
+																	</td>
 													<tr>
-														<td align="right">Father Contact No. </td>
+														<td align="right">Father Contact No.</td>
 														<td align="left">
-															<input type="number" class="form-control" value="" id="fnumber" name="fnumber">
-
+															<input type="text" class="form-control" value="" id="fnumber" name="fnumber"
+																maxlength="10" title="Contact number must be 10 digits"
+																oninput="this.value=this.value.replace(/[^0-9]/g,''); validateFatherContact();">
+															<div id="fnumber-error" style="color:red; display:none;">Contact number must be exactly 10 digits if provided.</div>
 														</td>
 													</tr>
+
 
 													<tr>
 															<td align="right">Father Photo</td>
@@ -634,15 +770,15 @@ $stn = "dashboard";
 																	</td>
                                                                     </tr>
 																	<tr>
-															<td align="right">
-																Mother Aadhaar No 
-															</td>
-															<td align="left">
-																<input type="text" value="" class="form-control" name="madharno" id="madharno" onkeyup='s2()'>
-																<!-- <div id='suggesstion-box'></div> -->
-																<!-- <div id="adhar-error" style="color:red; display:none;">Aadhaar number is required.</div> -->
-															</td>
-														</tr>
+																		<td align="right">Mother Aadhaar No</td>
+																		<td align="left">
+																			<input type="text" value="" class="form-control" name="madharno" id="madharno"
+																				maxlength="12" title="Aadhaar number must be 12 digits"
+																				oninput="this.value=this.value.replace(/[^0-9]/g,''); validateMotherAadhaar();">
+																			<div id="madharno-error" style="color:red; display:none;">Aadhaar number must be exactly 12 digits if provided.</div>
+																		</td>
+																	</tr>
+
 
 														<tr>
 															<td align="right">Mother Photo</td>
@@ -654,11 +790,12 @@ $stn = "dashboard";
 													<tr>
 														<td align="right">Contact No. <span style="color:red"><b>*</b></span></td>
 														<td align="left">
-															<input type="number" value="" class="form-control" name="conno" id="conno">
-															<div id="contact-error" style="color:red; display:none;">Contact number is required.</div>
+															<input type="text" value="" class="form-control" name="conno" id="conno"
+																maxlength="10" pattern="\d{10}" title="Contact number must be 10 digits"
+																oninput="this.value=this.value.replace(/[^0-9]/g,''); validateContact();">
+															<div id="contact-error" style="color:red; display:none;">Contact number is required and must be exactly 10 digits.</div>
 														</td>
-                                                        </tr>
-													<tr>
+													</tr>
 														<td align="right">Family </td>
 														<td align="left">
 
@@ -769,9 +906,12 @@ $stn = "dashboard";
 													<tr>
 														<td align="right">UAN No.</td>
 														<td align="left">
-															<input type="text"  name="uan" id="uan" class="form-control">
+															<input type="text" name="uan" id="uan" class="form-control"
+																maxlength="12" title="UAN number must be 12 digits"
+																oninput="this.value=this.value.replace(/[^0-9]/g,''); validateUAN();">
+															<div id="uan-error" style="color:red; display:none;">UAN number must be exactly 12 digits.</div>
 														</td>
-                                                        </tr>
+													</tr>
 														<tr>
 														<td align="right">PF No.</td>
 														<td>
@@ -781,9 +921,12 @@ $stn = "dashboard";
 													<tr>
 														<td align="right">ESI No.</td>
 														<td align="left">
-															<input type="text"  name="esi" id="esi" class="form-control">
+															<input type="text" name="esi" id="esi" class="form-control"
+																maxlength="10" title="ESI number must be 10 digits"
+																oninput="this.value=this.value.replace(/[^0-9]/g,''); validateESI();">
+															<div id="esi-error" style="color:red; display:none;">ESI number must be exactly 10 digits.</div>
 														</td>
-                                                        </tr>
+													</tr>
                 									<tr>
 														<td align="right">DOJ</td>
 														<td align="left">
@@ -1098,13 +1241,7 @@ $stn = "dashboard";
                                                                                                                                                       echo date('d-m-Y', $t); //echo date_format($apdate,"d-m-Y"); ?> "  name="uniformisdate" id="uniformisdate" class="form-control">
                                                                                                                 </td>
                                                                                                         </tr>
-                                                                                                        <tr>
-                                                                                                                <td align="right">Site Name</td>
-                                                                                                                <td align="left">
-                                                                                                                        <input type="text" value="" class="form-control" name="sitename" id="sitename"placeholder="Enter Site Name">
-                                                                                                                </td>
-                                                                                                        </tr>
-
+                                                                                                        
 																										<tr>
                                                                                                                 <td align="right">Tools</td>
                                                                                                                 <td align="left">
@@ -1528,6 +1665,8 @@ async function compressImage(file, fixedWidth = 500, fixedHeight = 500, initialQ
 document.querySelectorAll('.photo-upload').forEach(function(input) {
     input.addEventListener('change', async function() {
         const file = this.files[0];
+
+
         if (file) {
             const fileType = file.type;
 

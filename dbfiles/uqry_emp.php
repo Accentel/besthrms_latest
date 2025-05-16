@@ -270,6 +270,50 @@ if (isset($_POST['submit'])) {
 
         }
 
+        $iname = $_FILES['childphoto1']['name'];
+
+        if ($iname != "") {
+
+            $iname = $employeeid . 'childphoto1';
+
+            $tmp = $_FILES['childphoto1']['tmp_name'];
+
+            $dir = "empphotos";
+
+            $destination = $dir . '/' . $iname;
+
+            move_uploaded_file($tmp, $destination);
+
+            $childphoto1Path = $photoFullPath . '' . $destination;
+
+            $insertchildphoto1mimg = "update emps set childphoto1='$childphoto1Path' where empid='$id' ";
+
+            $insertchildphotoimgres = mysqli_query($link, $insertchildphoto1mimg) or die("could not connected" . mysqli_error($link));
+
+        }
+
+        $iname = $_FILES['childphoto2']['name'];
+
+        if ($iname != "") {
+
+            $iname = $employeeid . 'childpho2o1';
+
+            $tmp = $_FILES['childphoto2']['tmp_name'];
+
+            $dir = "empphotos";
+
+            $destination = $dir . '/' . $iname;
+
+            move_uploaded_file($tmp, $destination);
+
+            $childphoto2Path = $photoFullPath . '' . $destination;
+
+            $insertchildphoto2mimg = "update emps set childphoto2='$childphoto2Path' where empid='$id' ";
+
+            $insertchildphoto2imgres = mysqli_query($link, $insertchildphoto2mimg) or die("could not connected" . mysqli_error($link));
+
+        }
+
         $iname = $_FILES['qualphoto']['name'];
 
         if ($iname != "") {

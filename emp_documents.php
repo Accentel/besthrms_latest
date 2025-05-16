@@ -68,10 +68,9 @@
                     'Employee PAN' => $rw['panphoto'],
                     'Employee Qualification' => $rw['qualphoto'],
                     'Employee Medical Certificate' => $rw['mphoto'],
-                    // 'Employee ID Card (Front)' => $rw['empidcardfront'],
-                    // 'Employee ID Card (Back)' => $rw['empidcardback'],
                     'License Photo' => $rw['licimg'],
-                    // 'Employee Fingerprint' => $rw['empfingerprint'],
+                    'Children Image1' => $rw['childphoto1'],
+                    'Children Image2' => $rw['childphoto2'],
                     'Passbook' => $row['bphoto']
                 ];
 

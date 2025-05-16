@@ -65,6 +65,8 @@ if (isset($_POST['submit'])) {
     $username      = trim(($_POST['uname']));
     $password      = trim(($_POST['pwd']));
     $childname     = trim(($_POST['childname']));
+    // $childphoto1      = trim(($_POST['childphoto1']));
+    // $childphoto2     = trim(($_POST['childphoto2']));
 
     
    
@@ -74,11 +76,11 @@ if (isset($_POST['submit'])) {
     $result     = mysqli_query($link, $query) or die(mysqli_error($link));
     if (mysqli_num_rows($result) == 0) {
 
-      $x = "insert into emps(emp_name,esic_number,DOB,gender,maritalstatus,contactno,adharcardno,mcertificate,address,state,qualification, qualphoto,
+     $x = "insert into emps(emp_name,esic_number,DOB,gender,maritalstatus,contactno,adharcardno,mcertificate,address,state,qualification, qualphoto,
  DOJ,designation,uan,pan,ESI_NO,PFNO,photo,mphoto,emp_email,username,password,user,
- childname,fname,fdob,fnumber,fadharno,fphoto, mname,mdob,madharno,mophoto,wname,sdob,sphoto,sadharno,nok,bg,rno,relation,stat,licensestatus,tservices,managerial,mole1,mole2,fromdate,todate,sitename,tools,permaddress,localaddress,refeaddress)
+ childname,childphoto1,childphoto2,fname,fdob,fnumber,fadharno,fphoto, mname,mdob,madharno,mophoto,wname,sdob,sphoto,sadharno,nok,bg,rno,relation,stat,licensestatus,tservices,managerial,mole1,mole2,fromdate,todate,sitename,tools,permaddress,localaddress,refeaddress)
  values('$emp_name','$esic_number','$dob','$gender','$maritalstatus','$contactno','$adharcardno','$mcertificate','$address','$state','$qualification','$qualphoto',
- '$DOJ','$designation','$UANNO','$PANNO','$ESI_NO','$PFNO','$fileName15','$mphoto','$emp_email','$username','$password','$user','$childname',
+ '$DOJ','$designation','$UANNO','$PANNO','$ESI_NO','$PFNO','$fileName15','$mphoto','$emp_email','$username','$password','$user','$childname','$childphoto1','$childphoto2',
  '$fname','$fdob','$fnumber','$fadharno','$fphoto','$mname','$mdob','$madharno','$mophoto','$wname','$sdob','$sphoto','$sadharno','$nok','$bg','$rno','$relation','UNBLOCKED','$licensestatus','$tservices','$managerial','$mole1','$mole2','$fromdate','$todate','$sitename',
  '$tools','$permaddress','$localaddress','$refeaddress')";      
  $res = mysqli_query($link, $x) or die("could not connected" . mysqli_error($link));
@@ -171,7 +173,7 @@ if (isset($_POST['submit'])) {
         
         if ($basicamount != '') {
             
-    echo  $x6 = "INSERT INTO salaries(employeeid, basicamount, daamount, hraamount, otherallowance, advleave, advbonus,
+      $x6 = "INSERT INTO salaries(employeeid, basicamount, daamount, hraamount, otherallowance, advleave, advbonus,
                      totalmonthlyem)
                    VALUES('$employeeid', '$basicamount', '$daamount', '$hraamount', '$otherallowance', '$advleave', '$advbonus',
                      '$totalmonthlyem')";
@@ -253,6 +255,38 @@ if (isset($_POST['submit'])) {
             $insertqualimgres = mysqli_query($link, $insertqualmimg) or die("could not connected" . mysqli_error($link));
         }
 
+        $iname = $_FILES['childphoto1']['name'];
+        if ($iname != "") {
+            // echo "hi";
+
+            $iname = $employeeid . 'childphoto1';
+            $tmp   = $_FILES['childphoto1']['tmp_name'];
+
+            $dir         = "empphotos";
+            $destination = $dir . '/' . $iname;
+            move_uploaded_file($tmp, $destination);
+            $childphoto1Path      = $photoFullPath . '' . $destination;
+            $insertchildphoto1mimg = "update emps set childphoto1='$childphoto1Path' where empid='$last_id' ";
+
+            $insertchildphotoimgres = mysqli_query($link, $insertchildphoto1mimg) or die("could not connected" . mysqli_error($link));
+        }
+
+        $iname = $_FILES['childphoto2']['name'];
+        if ($iname != "") {
+            // echo "hi";
+
+            $iname = $employeeid . 'childphoto2';
+            $tmp   = $_FILES['childphoto2']['tmp_name'];
+
+            $dir         = "empphotos";
+            $destination = $dir . '/' . $iname;
+            move_uploaded_file($tmp, $destination);
+            $childphoto2Path      = $photoFullPath . '' . $destination;
+            $insertchildphoto2mimg = "update emps set childphoto2='$childphoto2Path' where empid='$last_id' ";
+
+            $insertchildphoto2imgres = mysqli_query($link, $insertchildphoto2mimg) or die("could not connected" . mysqli_error($link));
+        }
+
         $iname = $_FILES['fphoto']['name'];
         if ($iname != "") {
             // echo "hi";
@@ -276,8 +310,8 @@ if (isset($_POST['submit'])) {
             $iname = $employeeid . 'mophoto';
             $tmp   = $_FILES['mophoto']['tmp_name'];
 
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
+                $dir         = "empphotos";
+                $destination = $dir . '/' . $iname;
             move_uploaded_file($tmp, $destination);
             $mophotoPath      = $photoFullPath . '' . $destination;
             $insertmophotomimg = "update emps set mophoto='$mophotoPath' where empid='$last_id' ";
@@ -465,102 +499,21 @@ if (isset($_POST['submit'])) {
         }
 
         
-        $iname = $_FILES['img1']['name'];
-        if ($iname != "") {
-            // echo "hi";
+        // $iname = $_FILES['img1']['name'];
+        // if ($iname != "") {
+        //     // echo "hi";
 
-            $iname = $employeeid . 'img1';
-            $tmp   = $_FILES['img1']['tmp_name'];
+        //     $iname = $employeeid . 'img1';
+        //     $tmp   = $_FILES['img1']['tmp_name'];
 
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert1Path      = $photoFullPath . '' . $destination;
-            $insertcert1img = "update emps set certi1='$cert1Path' where empid='$last_id' ";
+        //     $dir         = "empphotos";
+        //     $destination = $dir . '/' . $iname;
+        //     move_uploaded_file($tmp, $destination);
+        //     $cert1Path      = $photoFullPath . '' . $destination;
+        //     $insertcert1img = "update emps set certi1='$cert1Path' where empid='$last_id' ";
 
-            $insertcer1imgres = mysqli_query($link, $insertcert1img) or die("could not connected" . mysqli_error($link));
-        }
-
-        $iname = $_FILES['img2']['name'];
-        if ($iname != "") {
-            // echo "hi";
-
-            $iname = $employeeid . 'img2';
-            $tmp   = $_FILES['img2']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert2Path      = $photoFullPath . '' . $destination;
-            $insertcert2img = "update emps set certi2='$cert2Path' where empid='$last_id' ";
-
-            $insertcer2imgres = mysqli_query($link, $insertcert2img) or die("could not connected" . mysqli_error($link));
-        }
-
-        $iname = $_FILES['img3']['name'];
-        if ($iname != "") {
-            // echo "hi";
-
-            $iname = $employeeid . 'img3';
-            $tmp   = $_FILES['img3']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert3Path      = $photoFullPath . '' . $destination;
-            $insertcert3img = "update emps set certi3='$cert3Path' where empid='$last_id' ";
-
-            $insertcer3imgres = mysqli_query($link, $insertcert3img) or die("could not connected" . mysqli_error($link));
-        }
-
-        $iname = $_FILES['img4']['name'];
-        if ($iname != "") {
-            // echo "hi";
-
-            $iname = $employeeid . 'img4';
-            $tmp   = $_FILES['img4']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert4Path      = $photoFullPath . '' . $destination;
-            $insertcert4img = "update emps set certi4='$cert4Path' where empid='$last_id' ";
-
-            $insertcer4imgres = mysqli_query($link, $insertcert4img) or die("could not connected" . mysqli_error($link));
-        }
-
-        $iname = $_FILES['img5']['name'];
-        if ($iname != "") {
-            // echo "hi";
-
-            $iname = $employeeid . 'img5';
-            $tmp   = $_FILES['img5']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert5Path      = $photoFullPath . '' . $destination;
-            $insertcert5img = "update emps set certi5='$cert5Path' where empid='$last_id' ";
-
-            $insertcer5imgres = mysqli_query($link, $insertcert5img) or die("could not connected" . mysqli_error($link));
-        }
-
-        $iname = $_FILES['img6']['name'];
-        if ($iname != "") {
-            // echo "hi";
-
-            $iname = $employeeid . 'img6';
-            $tmp   = $_FILES['img6']['tmp_name'];
-
-            $dir         = "empphotos";
-            $destination = $dir . '/' . $iname;
-            move_uploaded_file($tmp, $destination);
-            $cert6Path      = $photoFullPath . '' . $destination;
-            $insertcert6img = "update emps set certi6='$cert6Path' where empid='$last_id' ";
-
-            $insertcer6imgres = mysqli_query($link, $insertcert6img) or die("could not connected" . mysqli_error($link));
-        }
-        
+        //     $insertcer1imgres = mysqli_query($link, $insertcert1img) or die("could not connected" . mysqli_error($link));
+        // }
 
 //if it is successfully update then display alert box in form
         print "<script>";

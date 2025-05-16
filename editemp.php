@@ -37,6 +37,9 @@ function showchildren(z) {
     let noofkids = document.getElementById("nokblock");
     let spouseadharnoblock = document.getElementById("sadharnoblock");
     let spouseDOBblock = document.getElementById("spousedobblock");
+    let spousephotoblock = document.getElementById("spousephotoblock");
+    let childrenphoto1 = document.getElementById("childrenphoto1");
+    let childrenphoto2 = document.getElementById("childrenphoto2");
 
     if (z.value === "married") {
         childrenblock.removeAttribute("hidden");
@@ -44,17 +47,26 @@ function showchildren(z) {
         noofkids.removeAttribute("hidden");
         spouseadharnoblock.removeAttribute("hidden");
         spouseDOBblock.removeAttribute("hidden");
+        spousephotoblock.removeAttribute("hidden");
+        childrenphoto1.removeAttribute("hidden");
+        childrenphoto2.removeAttribute("hidden");
     } else {
         childrenblock.setAttribute("hidden", "hidden");
         childrennameblock.setAttribute("hidden", "hidden");
         noofkids.setAttribute("hidden", "hidden");
         spouseadharnoblock.setAttribute("hidden", "hidden");
         spouseDOBblock.setAttribute("hidden", "hidden");
+        spousephotoblock.setAttribute("hidden", "hidden");
+        childrenphoto1.setAttribute("hidden", "hidden");
+        childrenphoto2.setAttribute("hidden", "hidden");
 
         document.getElementById("nok").value = '';
         document.getElementById("sadharno").value = '';
         document.getElementById("wname").value = '';
         document.getElementById("childname").value = '';
+        document.getElementById("sphoto").value = '';
+        document.getElementById("childphoto1").value = '';
+        document.getElementById("childphoto2").value = '';
     }
 }
 
@@ -144,6 +156,34 @@ window.onload = function() {
     });
 </script>
 
+<script>
+function validateUAN() {
+    const uanInput = document.getElementById("uan");
+    const uan = uanInput.value;
+    const errorBox = document.getElementById("uan-error");
+
+    if (uan.length > 0 && uan.length !== 12) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+
+<script>
+function validateESI() {
+    const esiInput = document.getElementById("esi");
+    const esi = esiInput.value;
+    const errorBox = document.getElementById("esi-error");
+
+    if (esi.length > 0 && esi.length !== 10) {
+        errorBox.style.display = "block";
+    } else {
+        errorBox.style.display = "none";
+    }
+}
+</script>
+
     <body class="no-skin">
 
 
@@ -229,11 +269,19 @@ window.onload = function() {
                                                 <td align="right">State:</td>
                                                 <td><input type="text" readonly value="<?php echo $rw['state'] ?>"  name="state" id="state" class="form-control"></td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <td align="right">ESIC Number </td>
                                                 <td><input type="text" class="form-control" value="<?php echo $rw['esic_number'] ?>"  name="esic_number" id="esic_number"></td>
                                                 </tr>
-                                            <tr>
+                                            <tr> -->
+
+                                             <tr>
+                                                <td align="right">Site Name</td>
+                                                <td align="left">
+                                                    <input type="text" class="form-control" value="<?php echo $rw['sitename'] ?>" name="sitename" id="sitename">
+                                                </td>
+                                            </tr>
+                                            
                                                 <td align="right">Employee ID</td>
                                                 <td><input type="text" readonly value="<?php echo $rw['employeeid'] ?>"  name="eid" id="eid" class="form-control"></td>
                                             </tr>
@@ -287,7 +335,7 @@ window.onload = function() {
                                                 <td><input type="date" value="<?php echo $rw["sdob"] ?>"  name="sdob" id="sdob" class="form-control"></td>
                                             </tr>
 
-                                            <tr>
+                                            <tr id="spousephotoblock">
                                                 <td align="right">Spouse Photo</td>
                                                 <td align="left">
                                                     <input type="file" name="sphoto" id="sphoto"  class="form-control photo-upload" accept=".jpeg, .png, .jpg" />
@@ -316,7 +364,38 @@ window.onload = function() {
                                                 <td align="right">Children Names</td>
                                                 <td><textarea name="childname" id="childname" class="form-control"><?php echo $rw['childname'] ?></textarea></td>
                                             </tr>
-                <tr>
+
+                                            <tr id="childrenphoto1">
+                                                <td align="right">Children Photo1</td>
+                                                <td align="left">
+                                                    <input type="file" name="childphoto1" id="childphoto1"  class="form-control photo-upload" accept=".jpeg, .png, .jpg" />
+
+                                                    <?php
+                                                        if ($rw['childphoto1'] != "") {
+                                                            ?>
+                                                        <a href='<?php echo $rw['childphoto1'] ?>' target="_blank" style="color:blue;">view image</a>
+                                                    <?php
+                                                        }
+                                                        ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr id="childrenphoto2">
+                                                <td align="right">Children Photo2</td>
+                                                <td align="left">
+                                                    <input type="file" name="childphoto2" id="childphoto2"  class="form-control photo-upload" accept=".jpeg, .png, .jpg" />
+
+                                                    <?php
+                                                        if ($rw['childphoto2'] != "") {
+                                                            ?>
+                                                        <a href='<?php echo $rw['childphoto2'] ?>' target="_blank" style="color:blue;">view image</a>
+                                                    <?php
+                                                        }
+                                                        ?>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
                                                 <td align="right">Blood Group </td>
                                                 <td align="left">
                                                     <input type="text" class="form-control" value="<?php echo $rw['bg'] ?>" id="bg" name="bg">
@@ -493,16 +572,22 @@ window.onload = function() {
                                             <tr>
                                                 <td align="right">UAN No.</td>
                                                 <td align="left">
-                                                    <input type="text"  name="uan" value="<?php echo $rw['uan'] ?>" id="uan" class="form-control">
+                                                    <input type="text" name="uan" value="<?php echo $rw['uan'] ?>" id="uan" class="form-control"
+                                                        maxlength="12" title="UAN number must be 12 digits"
+                                                        oninput="this.value=this.value.replace(/[^0-9]/g,''); validateUAN();">
+                                                    <div id="uan-error" style="color:red; display:none;">UAN number must be exactly 12 digits.</div>
                                                 </td>
-                                                </tr>
+                                            </tr>
           
                                             <tr>
                                                 <td align="right">ESI No.</td>
                                                 <td align="left">
-                                                    <input type="text"  name="esi" id="esi" value="<?php echo $rw['ESI_NO'] ?>" class="form-control">
+                                                    <input type="text" name="esi" id="esi" value="<?php echo $rw['ESI_NO'] ?>" class="form-control"
+                                                        maxlength="10" title="ESI number must be 10 digits"
+                                                        oninput="this.value=this.value.replace(/[^0-9]/g,''); validateESI();">
+                                                    <div id="esi-error" style="color:red; display:none;">ESI number must be exactly 10 digits.</div>
                                                 </td>
-                                                </tr>
+                                            </tr>
                                             <tr>
                                                 <td align="right">DOJ</td>
                                                 <td align="left">
@@ -746,21 +831,6 @@ window.onload = function() {
                                                 </td>
 
                                             </tr>
-
-
-
-                                            <tr>
-
-                                                <td align="right">Site Name</td>
-
-                                                <td align="left">
-
-                                                    <input type="text" class="form-control" value="<?php echo $rw['sitename'] ?>" name="sitename" id="sitename">
-
-                                                </td>
-
-                                            </tr>
-
 
                                             <tr>
                                                 <td align="right">Tools</td>
