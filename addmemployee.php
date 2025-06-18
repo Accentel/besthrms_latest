@@ -675,15 +675,15 @@ function validateMotherAadhaar() {
 																	</td>
                                                                 </tr>
 																<tr id="sadharnoblock" hidden="hidden">
-															<td align="right">
-																Spouse Aadhaar No 
-															</td>
-															<td align="left">
-																<input type="text" value="" class="form-control" name="sadharno" id="sadharno">
-																<!-- <div id='suggesstion-box'></div> -->
-																<!-- <div id="adhar-error" style="color:red; display:none;">Aadhaar number is required.</div> -->
-															</td>
-														</tr>
+																	<td align="right">
+																		Spouse Aadhaar No 
+																	</td>
+																	<td align="left">
+																		<input type="text" value="" class="form-control" name="sadharno" id="sadharno">
+																		<!-- <div id='suggesstion-box'></div> -->
+																		<!-- <div id="adhar-error" style="color:red; display:none;">Aadhaar number is required.</div> -->
+																	</td>
+																</tr>
                                                         <tr id="spousephotoblock" hidden="hidden">
 															<td align="right">Spouse Photo</td>
 															<td align="left">

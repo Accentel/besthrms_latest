@@ -585,14 +585,14 @@ function validateMotherAadhaar() {
                                                 </td>
                                             </tr>
                                             <tr>
-    <td align="right">Status</td>
-    <td align="left">
-        <select name="stat" id="stat" class="form-control">
-            <option value="UNBLOCKED"<?php echo($rw["stat"] == "UNBLOCKED") ? 'selected' : ''; ?>>UNBLOCKED</option>
-            <option value="BLOCKED"<?php echo($rw["stat"] == "BLOCKED") ? 'selected' : ''; ?>>BLOCKED</option>
-        </select>
-    </td>
-</tr>
+                                                <td align="right">Status</td>
+                                                <td align="left">
+                                                    <select name="stat" id="stat" class="form-control">
+                                                        <option value="UNBLOCKED"<?php echo($rw["stat"] == "UNBLOCKED") ? 'selected' : ''; ?>>UNBLOCKED</option>
+                                                        <option value="BLOCKED"<?php echo($rw["stat"] == "BLOCKED") ? 'selected' : ''; ?>>BLOCKED</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td align="right">Qualification & Experience</td>
                                                 <td align="left">

@@ -16,7 +16,7 @@ if (isset($_POST['submit'])) {
     //reading form data
     //$empid=trim($_POST['empid']);
     $emp_name      = trim($_POST['empname']);
-    $esic_number      = trim($_POST['esic_number']);
+    // $esic_number      = trim($_POST['esic_number']);
     $dob           = trim($_POST['dob']);
     $gender        = trim($_POST['gender']);
     $maritalstatus = trim($_POST['marstatus']);
@@ -76,10 +76,10 @@ if (isset($_POST['submit'])) {
     $result     = mysqli_query($link, $query) or die(mysqli_error($link));
     if (mysqli_num_rows($result) == 0) {
 
-     $x = "insert into emps(emp_name,esic_number,DOB,gender,maritalstatus,contactno,adharcardno,mcertificate,address,state,qualification, qualphoto,
+   $x = "insert into emps(emp_name,DOB,gender,maritalstatus,contactno,adharcardno,mcertificate,address,state,qualification, qualphoto,
  DOJ,designation,uan,pan,ESI_NO,PFNO,photo,mphoto,emp_email,username,password,user,
  childname,childphoto1,childphoto2,fname,fdob,fnumber,fadharno,fphoto, mname,mdob,madharno,mophoto,wname,sdob,sphoto,sadharno,nok,bg,rno,relation,stat,licensestatus,tservices,managerial,mole1,mole2,fromdate,todate,sitename,tools,permaddress,localaddress,refeaddress)
- values('$emp_name','$esic_number','$dob','$gender','$maritalstatus','$contactno','$adharcardno','$mcertificate','$address','$state','$qualification','$qualphoto',
+ values('$emp_name','$dob','$gender','$maritalstatus','$contactno','$adharcardno','$mcertificate','$address','$state','$qualification','$qualphoto',
  '$DOJ','$designation','$UANNO','$PANNO','$ESI_NO','$PFNO','$fileName15','$mphoto','$emp_email','$username','$password','$user','$childname','$childphoto1','$childphoto2',
  '$fname','$fdob','$fnumber','$fadharno','$fphoto','$mname','$mdob','$madharno','$mophoto','$wname','$sdob','$sphoto','$sadharno','$nok','$bg','$rno','$relation','UNBLOCKED','$licensestatus','$tservices','$managerial','$mole1','$mole2','$fromdate','$todate','$sitename',
  '$tools','$permaddress','$localaddress','$refeaddress')";      

@@ -13,7 +13,7 @@ if (isset($_POST['submit'])) {
     //reading form data
     $photoFullPath = "http://localhost/BESTHRMS_LATEST/";
     $employeeid    = trim($_POST['eid']);
-    $esic_number      = trim($_POST['esic_number']);
+    // $esic_number      = trim($_POST['esic_number']);
     $emp_name      = trim($_POST['empname']);
     $DOB           = trim($_POST['dob']);
     $fname         = trim($_POST['fname']);
@@ -117,7 +117,7 @@ if (isset($_POST['submit'])) {
     //$res = mysqli_query($link, "insert into acyear(year,user) values('$acyear','$user')") or die("could not connected" . mysqli_error());
     //if the form variables are not empty then update data into database
 
-       $sql = "update emps set emp_name='$emp_name',esic_number='$esic_number',DOB ='$DOB',gender='$gender',maritalstatus='$maritalstatus',contactno='$contactno',
+       $sql = "update emps set emp_name='$emp_name',DOB ='$DOB',gender='$gender',maritalstatus='$maritalstatus',contactno='$contactno',
        adharcardno='$adharcardno',mcertificate='$mcertificate',address='$address',state='$state',qualification='$qualification',DOJ='$DOJ',fname='$fname',fdob='$fdob',fadharno='$fadharno',mname='$mname', mdob='$mdob',madharno='$madharno',
        rno='$rno',wname='$wname',sdob='$sdob',sadharno='$sadharno',nok='$nok',childname='$childname',pan='$pan',uan='$uan',designation='$designation',ESI_NO='$ESI_NO',emp_email='$emp_email',bg='$bg',stat='$stat',
        username='$username',password='$password',tservices='$tservices',managerial='$managerial',mole1='$mole1',mole2='$mole2',fromdate='$fromdate',todate='$todate',

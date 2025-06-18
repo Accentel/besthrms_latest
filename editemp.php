@@ -1025,11 +1025,6 @@ function validateESI() {
                                                         <i class="ace-icon fa fa-save bigger-110"></i>
                                                         Save
                                                     </button>
-
-
-
-
-
                                                     &nbsp; &nbsp; &nbsp;
                                                     <a href="emplog.php"><button class="btn btn-danger" type="button" name="button" id="Close">
                                                             <i class="ace-icon fa fa-close bigger-110"></i>
